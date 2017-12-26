@@ -1,0 +1,12 @@
+Metadata-Version: 1.1
+Name: gspublish
+Version: 0.5
+Summary: Publish PostGIS layers to geoserver
+Home-page: http://github.com/cartologic/gspublish
+Author: George Ioannou
+Author-email: gmioannou@cartologic.com
+License: UNKNOWN
+Download-URL: http://github.com/cartologic/gspublish
+Description-Content-Type: UNKNOWN
+Description: UNKNOWN
+Platform: UNKNOWN
