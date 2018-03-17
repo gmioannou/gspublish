@@ -1,7 +1,7 @@
+README.md
 gspublish/__init__.py
 gspublish/gslayers.py
 gspublish/gspublish.py
-gspublish/gsstyles.py
 gspublish/postgis.py
 gspublish/style_generator.py
 gspublish.egg-info/PKG-INFO

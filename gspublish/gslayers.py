@@ -9,7 +9,7 @@ def publish_layers(pgdb, pginfo, gscat, gsws, sld_info):
 	# get schemas list from the database
 	schemas = pgdb.get_schemas()
 
-	for schema in schemas[6:]:
+	for schema in schemas:
 		# get layers from the databae
 		layers = pgdb.get_layers(schema)
 
