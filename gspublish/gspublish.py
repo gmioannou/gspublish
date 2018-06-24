@@ -51,16 +51,16 @@ def main():
 		print 'Workspace created...'
 
 	# sldfile info
-	sld_info = Struct(**dict(config.items('Styles')))
-	sld_info.folder = config.get('Styles', 'folder')
-	sld_info.overwrite = config.getboolean('Styles', 'overwrite')
+	sldinfo = Struct(**dict(config.items('Styles')))
+	sldinfo.folder = config.get('Styles', 'folder')
+	sldinfo.overwrite = config.getboolean('Styles', 'overwrite')
 
 	print '\nStyles info:'
-	print ' Folder: ', sld_info.folder
-	print ' Overwrite: ', sld_info.overwrite
+	print ' Folder: ', sldinfo.folder
+	print ' Overwrite: ', sldinfo.overwrite
 
 	# publish layers from postgis to geoserver
-	publish_layers(pgdb, pginfo, gscat, gsws, sld_info)
+	publish_layers(pgdb, gscat, gsws, pginfo, gsinfo, sldinfo)
 
 	# close postgis connection
 	pgdb.conn.close()

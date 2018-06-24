@@ -3,19 +3,25 @@ import glob
 import copy
 from style_generator import Style
 
-def publish_layers(pgdb, pginfo, gscat, gsws, sld_info):
+def publish_layers(pgdb, gscat, gsws, pginfo, gsinfo, sldinfo):
 	'''iterate database schemas, create datastores in geoserver and publish layers'''
 
 	# get schemas list from the database
 	schemas = pgdb.get_schemas()
 
 	for schema in schemas:
+		# set datastore name to schema if no default provided
+		if gsinfo.datastore:
+			datastore = gsinfo.datastore
+		else:
+			datastore = schema
+
 		# get layers from the databae
 		layers = pgdb.get_layers(schema)
 
 		# create datastore in geoserver only if schema has layers
 		if len(layers) > 0:
-			gsds = create_datastore(gscat, gsws, schema, pginfo)
+			gsds = create_datastore(gscat, gsws, datastore, schema, pginfo)
 
 		# publish layers
 		for layer in layers:
@@ -26,8 +32,8 @@ def publish_layers(pgdb, pginfo, gscat, gsws, sld_info):
 
 			if layer_srs != 'EPSG:0':
 				publish_layer(gscat, gsws, gsds, layer_name, layer_srs, layer_geomtype)
-				create_default_style(gscat, gsws, gsds, layer_name, layer_geomtype, sld_info)
-				create_alternate_styles(gscat, gsws, pgdb, layer_schema, layer_name, layer_geomtype, sld_info)
+				create_default_style(gscat, gsws, gsds, layer_name, layer_geomtype, sldinfo)
+				create_alternate_styles(gscat, gsws, pgdb, layer_schema, layer_name, layer_geomtype, sldinfo)
 
 def publish_layer(gscat, gsws, gsds, layer_name, layer_srs, layer_geomtype):
 	'''Publish layers as feature_types in geoserver's workspace.datastore'''
@@ -41,7 +47,7 @@ def publish_layer(gscat, gsws, gsds, layer_name, layer_srs, layer_geomtype):
 	else:
 		print '\n  {0}.{1}.{2} (already published)'.format(gsws.name, gsds.name, layer_name)
 
-def create_default_style(gscat, gsws, gsds, layer_name, layer_geomtype, sld_info):
+def create_default_style(gscat, gsws, gsds, layer_name, layer_geomtype, sldinfo):
 	'''Generate and publish layer's default style'''
 	style_name = layer_name
 
@@ -53,8 +59,8 @@ def create_default_style(gscat, gsws, gsds, layer_name, layer_geomtype, sld_info
 		print '    {0}'.format(style_name)
 		def_style = Style(style_name,
 						layer_geomtype,
-						sld_folder=sld_info.folder,
-						overwrite=sld_info.overwrite)
+						sld_folder=sldinfo.folder,
+						overwrite=sldinfo.overwrite)
 
 		def_style.generate()
 		def_style.publish(gscat, gsws)
@@ -71,13 +77,13 @@ def create_default_style(gscat, gsws, gsds, layer_name, layer_geomtype, sld_info
 	else:
 		print '    layer {0} is not published...' % layer_name
 
-def create_alternate_styles(gscat, gsws, pgdb, layer_schema, layer_name, layer_geomtype, sld_info):
+def create_alternate_styles(gscat, gsws, pgdb, layer_schema, layer_name, layer_geomtype, sldinfo):
 	'''Generate and publish layer's alternate styles based on lookup table's records'''
 	# need to create a list first and then assign it to gslayer.styles
 	alt_styles = []
 	luts = pgdb.get_lookup_tables(layer_schema, layer_name)
 	for lut in luts:
-		gsstyle = create_lut_style(gscat, gsws, pgdb, lut, layer_geomtype, sld_info)
+		gsstyle = create_lut_style(gscat, gsws, pgdb, lut, layer_geomtype, sldinfo)
 		alt_styles.append(gsstyle)
 
 	# get layer and update alternate styles
@@ -86,7 +92,7 @@ def create_alternate_styles(gscat, gsws, pgdb, layer_schema, layer_name, layer_g
 
 	gscat.save(gslayer)
 
-def create_lut_style(gscat, gsws, pgdb, lut, layer_geomtype, sld_info):
+def create_lut_style(gscat, gsws, pgdb, lut, layer_geomtype, sldinfo):
 	'''Create layer's alternate style based on lookup table'''
 	layer_schema = lut[0]
 	layer_name = lut[1]
@@ -114,8 +120,8 @@ def create_lut_style(gscat, gsws, pgdb, lut, layer_geomtype, sld_info):
 		print '    {0}'.format(style_name)
 		lut_style = Style(style_name,
 		              layer_geomtype,
-					  sld_folder=sld_info.folder,
-					  overwrite=sld_info.overwrite,
+					  sld_folder=sldinfo.folder,
+					  overwrite=sldinfo.overwrite,
 					  property_name=layer_field,
 					  values_dictionary=recs_dict,
 					  stroke_width=0.1)
@@ -129,7 +135,7 @@ def create_lut_style(gscat, gsws, pgdb, lut, layer_geomtype, sld_info):
 
 	return gsstyle
 
-def create_datastore(gscat, gsws, schema, pginfo):
+def create_datastore(gscat, gsws, datastore, schema, pginfo):
 	'''Create datastore in geoserver catalog/workspace'''
 
 	# update geoserver datastore connection info to postgis
@@ -139,13 +145,13 @@ def create_datastore(gscat, gsws, schema, pginfo):
 	gsds_info.update({'dbtype': 'postgis', 'schema': schema})
 
 	# create the Datastore if it does not exist
-	gsds = gscat.get_store(schema, gsws)
+	gsds = gscat.get_store(datastore, gsws)
 	if gsds == None:
-		gsds = gscat.create_datastore(schema, gsws)
+		gsds = gscat.create_datastore(datastore, gsws)
 		gsds.connection_parameters.update(**gsds_info)
 		gscat.save(gsds)
-		print '\n{0}.{1}'.format(gsws.name, schema)
+		print '\n{0}.{1}'.format(gsws.name, datastore)
 	else:
-		print '\n{0}.{1} (alreay published)'.format(gsws.name, schema)
+		print '\n{0}.{1} (already published)'.format(gsws.name, schema)
 
 	return gsds
