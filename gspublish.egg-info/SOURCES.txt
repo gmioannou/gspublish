@@ -1,4 +1,5 @@
 README.md
+setup.py
 gspublish/__init__.py
 gspublish/gslayers.py
 gspublish/gspublish.py
