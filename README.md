@@ -1,3 +1,3 @@
-Publish PostGIS table with geometry (layers) to Geoserver
+Publish PostGIS tables with geometry (layers) to Geoserver
 
-Usage: gspublish <configfile>
+Usage: gspublish < configfile >
