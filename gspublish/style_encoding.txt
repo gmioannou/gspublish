@@ -1,1 +1,4 @@
-JAVA_TOOL_OPTIONS to "-Dfile.encoding=UTF8"
+# Create System variable on Geoserver machine
+# to play well with non english text in styles
+
+JAVA_TOOL_OPTIONS = "-Dfile.encoding=UTF8"

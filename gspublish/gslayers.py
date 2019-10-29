@@ -67,9 +67,12 @@ def create_default_style(gscat, gsws, gsds, layer_name, layer_geomtype, sldinfo)
 	else:
 		print '    {0} (style already published)'.format(style_name)
 
+	# get default style
+	gsstyle = gscat.get_style(style_name, gsws)
+
 	gslayer = gscat.get_layer('{0}:{1}'.format(gsws.name, layer_name))
 	if gslayer != None:
-		gslayer.default_style = style_name
+		gslayer.default_style = gsstyle
 		gscat.save(gslayer)
 	else:
 		print '    layer {0} is not published...' % layer_name
@@ -125,7 +128,7 @@ def create_lut_style(gscat, gsws, pgdb, lut, layer_geomtype, sldinfo):
 		lut_style.generate()
 		lut_style.publish(gscat, gsws)
 	else:
-		print '    {0} (already published)'.format(style_name)
+		print '    {0} (alt style already published)'.format(style_name)
 
 	# get style
 	gsstyle = gscat.get_style(style_name, gsws)

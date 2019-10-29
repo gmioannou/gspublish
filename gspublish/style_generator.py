@@ -178,5 +178,6 @@ class Style:
 		with open(self.file_name) as f:
 			try:
 				gscat.create_style(self.name, f.read(), overwrite=True, workspace=gsws.name)
+				gscat.reload()
 			except:
 				print('   unable to publish style')
