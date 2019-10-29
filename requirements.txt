@@ -6,7 +6,7 @@ certifi==2018.8.24
 chardet==3.0.4
 colorama==0.4.1
 configparser==3.8.1
-Django==1.11.15
+Django==1.11.23
 enum34==1.1.6
 -e git+https://github.com/cartologic/fgdb2postgis.git@e774b9264be82939bc2926863b0376b14d68e7af#egg=fgdb2postgis
 -e git+git@github.com:gmioannou/fginspect.git@b1b95feb8d2c9457c973bcbb09de5e13ce64c405#egg=fginspect
