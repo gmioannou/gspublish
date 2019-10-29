@@ -1,0 +1,43 @@
+arcgis-rest-query==0.14
+archook==1.1.0
+astroid==1.6.6
+backports.functools-lru-cache==1.5
+certifi==2018.8.24
+chardet==3.0.4
+colorama==0.4.1
+configparser==3.8.1
+Django==1.11.15
+enum34==1.1.6
+-e git+https://github.com/cartologic/fgdb2postgis.git@e774b9264be82939bc2926863b0376b14d68e7af#egg=fgdb2postgis
+-e git+git@github.com:gmioannou/fginspect.git@b1b95feb8d2c9457c973bcbb09de5e13ce64c405#egg=fginspect
+futures==3.3.0
+gisdata==0.5.4
+gsconfig==1.0.10
+-e git+https://github.com/gmioannou/gspublish.git@4edb3856ebbb007e97daba0fb203cf9806c13cbb#egg=gspublish
+httplib2==0.13.1
+idna==2.7
+isort==4.3.21
+lazy-object-proxy==1.4.1
+lxml==3.3.5
+mccabe==0.6.1
+nose==1.3.7
+numpy==1.16.4
+psycopg2==2.7.5
+pylint==1.9.5
+-e git+git@github.com:gmioannou/python-sld.git@294e11ff99c6d9f9f69022033da15190f3ebfc67#egg=python_sld
+python-slugify==3.0.3
+pytz==2018.5
+PyYAML==5.1.2
+regex==2018.8.29
+requests==2.19.1
+ruamel.ordereddict==0.4.14
+ruamel.yaml==0.16.5
+ruamel.yaml.clib==0.1.2
+Scaffold==0.1.3
+singledispatch==3.4.0.3
+six==1.12.0
+text-unidecode==1.2
+tqdm==4.35.0
+Unidecode==0.4.21
+urllib3==1.23
+wrapt==1.11.2

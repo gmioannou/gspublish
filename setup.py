@@ -16,7 +16,7 @@ config = {
     'version': VERSION,
     'install_requires': [
 		'ConfigParser>=3.5.0',
-		'gsconfig>=1.0.8',
+		'geoserver-restconfig>=1.0.4',
         'psycopg2>=2.6.2',
         'pyyaml>=3.12'
 	],
@@ -28,6 +28,10 @@ config = {
 			'gspublish = gspublish.gspublish:main'
 		]
 	},
+    'cmdclass': {
+        'package': 'gspublish'
+    }
 }
 
 setup(**config)
+

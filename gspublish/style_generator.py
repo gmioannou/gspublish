@@ -44,21 +44,21 @@ class Style:
 				self.write_Symbolizer()
 
 	def write_Symbolizer(self):
-		if (self.geom_type in {'Point', 'POINT'}):
+		if (self.geom_type in {'Point', 'POINT', 'MULTIPOINT', 'MultiPoint'}):
 			symbol = 'circle'
 			symbol_size = 8
 			stroke_color = self.get_color()
 			fill_color = self.get_color()
 			self.write_PointSymbolizer(symbol, symbol_size, fill_color, stroke_color)
 
-		elif (self.geom_type in {'Line', 'LINE', 'MULTILINESTRING'}):
+		elif (self.geom_type in {'Line', 'LINE', 'MULTILINESTRING', 'MultiLineString'}):
 			stroke_color = '#454545'
 			self.write_LineSymbolizer(stroke_color, self.stroke_width * 20)
 
 			stroke_color = self.get_color()
 			self.write_LineSymbolizer(stroke_color, self.stroke_width * 15)
 
-		elif (self.geom_type in {'Polygon', 'POLYGON', 'MULTIPOLYGON'}):
+		elif (self.geom_type in {'Polygon', 'POLYGON', 'MULTIPOLYGON', 'MultiPolygon'}):
 			stroke_color = '#454545'
 			fill_color = self.get_color()
 			self.write_PolygonSymbolizer(fill_color, stroke_color)
@@ -176,4 +176,7 @@ class Style:
 
 	def publish(self, gscat, gsws):
 		with open(self.file_name) as f:
-			gscat.create_style(self.name, f.read(), overwrite=True, workspace=gsws.name)
+			try:
+				gscat.create_style(self.name, f.read(), overwrite=True, workspace=gsws.name)
+			except:
+				print('   unable to publish style')

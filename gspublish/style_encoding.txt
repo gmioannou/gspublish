@@ -1,0 +1,1 @@
+JAVA_TOOL_OPTIONS to "-Dfile.encoding=UTF8"

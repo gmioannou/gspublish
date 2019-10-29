@@ -41,11 +41,11 @@ def publish_layer(gscat, gsws, gsds, layer_name, layer_srs, layer_geomtype):
 	layer_resource = gscat.get_resource(layer_name, gsds, gsws)
 	if layer_resource == None:
 		layer = gscat.publish_featuretype(layer_name, gsds, layer_srs)
-		layer.abstract = '{0}.{1}.{2} {3} {4}'.format(gsws.name, gsds.name, layer_name, layer_geomtype, layer_srs)
+		layer.abstract = '{0}  {1}  {2}'.format(layer_name, layer_geomtype, layer_srs)
 		gscat.save(layer)
 		print '\n  {0}.{1}.{2}'.format(gsws.name, gsds.name, layer_name)
 	else:
-		print '\n  {0}.{1}.{2} (already published)'.format(gsws.name, gsds.name, layer_name)
+		print '\n  {0}.{1}.{2} (layer already published)'.format(gsws.name, gsds.name, layer_name)
 
 def create_default_style(gscat, gsws, gsds, layer_name, layer_geomtype, sldinfo):
 	'''Generate and publish layer's default style'''
@@ -65,14 +65,11 @@ def create_default_style(gscat, gsws, gsds, layer_name, layer_geomtype, sldinfo)
 		def_style.generate()
 		def_style.publish(gscat, gsws)
 	else:
-		print '    {0} (already published)'.format(style_name)
-
-	# get default style
-	gsstyle = gscat.get_style(style_name, gsws)
+		print '    {0} (style already published)'.format(style_name)
 
 	gslayer = gscat.get_layer('{0}:{1}'.format(gsws.name, layer_name))
 	if gslayer != None:
-		gslayer.default_style = gsstyle
+		gslayer.default_style = style_name
 		gscat.save(gslayer)
 	else:
 		print '    layer {0} is not published...' % layer_name
