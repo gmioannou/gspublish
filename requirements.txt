@@ -14,7 +14,7 @@ futures==3.3.0
 gisdata==0.5.4
 gsconfig==1.0.10
 -e git+https://github.com/gmioannou/gspublish.git@4edb3856ebbb007e97daba0fb203cf9806c13cbb#egg=gspublish
-httplib2==0.13.1
+httplib2==0.18.0
 idna==2.7
 isort==4.3.21
 lazy-object-proxy==1.4.1
