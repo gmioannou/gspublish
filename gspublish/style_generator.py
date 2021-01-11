@@ -15,16 +15,16 @@ class Style:
 		self.file_unit = None
 
 	def info(self):
-		print self.name
-		print self.file_name
+		print(self.name)
+		print(self.file_name)
 
 	def generate(self):
 		if os.path.exists(self.file_name):
 			if not self.overwrite:
-				print '      sld file already exists...'
+				print('      sld file already exists...')
 				return
 			else:
-				print '      sld file already exists overwriting...'
+				print('      sld file already exists overwriting...')
 
 		self.init_folder()
 		self.open_file()
@@ -137,7 +137,7 @@ class Style:
 		self.write_it('</sld:StyledLayerDescriptor>')
 
 	def get_color(self):
-		r = lambda: (random.randint(0,255) + 255) / 2
+		r = lambda: int((random.randint(0,255) + 255) / 2)
 		if ('Water' in self.name or 'Lakes' in self.name or 'Sea' in self.name or 'Gulf' in self.name):
 			color = '#%02X%02X%02X' % (0,0,r())
 		else:
@@ -160,16 +160,16 @@ class Style:
 
 	def validate(self):
 
-		print '==>', self.overwrite
+		print('==>', self.overwrite)
 
 		status = True
 		if os.path.exists(self.file_name):
-			print '      (sld file already exists,',
+			print('      (sld file already exists,'),
 			if self.overwrite:
-				print 'overwriting ...)'
+				print('overwriting ...)')
 				status = True
 			else:
-				print 'not overwriting ...)'
+				print('not overwriting ...)')
 				status = False
 
 		return status

@@ -1,7 +1,7 @@
 import sys, os
 import glob
 import copy
-from style_generator import Style
+from .style_generator import Style
 
 def publish_layers(pgdb, gscat, gsws, pginfo, gsinfo, sldinfo):
 	'''iterate database schemas, create datastores in geoserver and publish layers'''
@@ -43,9 +43,9 @@ def publish_layer(gscat, gsws, gsds, layer_name, layer_srs, layer_geomtype):
 		layer = gscat.publish_featuretype(layer_name, gsds, layer_srs)
 		layer.abstract = '{0}  {1}  {2}'.format(layer_name, layer_geomtype, layer_srs)
 		gscat.save(layer)
-		print '\n  {0}.{1}.{2}'.format(gsws.name, gsds.name, layer_name)
+		print('\n  {0}.{1}.{2}'.format(gsws.name, gsds.name, layer_name))
 	else:
-		print '\n  {0}.{1}.{2} (layer already published)'.format(gsws.name, gsds.name, layer_name)
+		print('\n  {0}.{1}.{2} (layer already published)'.format(gsws.name, gsds.name, layer_name))
 
 def create_default_style(gscat, gsws, gsds, layer_name, layer_geomtype, sldinfo):
 	'''Generate and publish layer's default style'''
@@ -56,7 +56,7 @@ def create_default_style(gscat, gsws, gsds, layer_name, layer_geomtype, sldinfo)
 
 	# generate and publish default style if it does not exist
 	if gsstyle == None:
-		print '    {0}'.format(style_name)
+		print('    {0}'.format(style_name))
 		def_style = Style(style_name,
 						layer_geomtype,
 						sld_folder=sldinfo.folder,
@@ -65,7 +65,7 @@ def create_default_style(gscat, gsws, gsds, layer_name, layer_geomtype, sldinfo)
 		def_style.generate()
 		def_style.publish(gscat, gsws)
 	else:
-		print '    {0} (style already published)'.format(style_name)
+		print('    {0} (style already published)'.format(style_name))
 
 	# get default style
 	gsstyle = gscat.get_style(style_name, gsws)
@@ -75,7 +75,7 @@ def create_default_style(gscat, gsws, gsds, layer_name, layer_geomtype, sldinfo)
 		gslayer.default_style = gsstyle
 		gscat.save(gslayer)
 	else:
-		print '    layer {0} is not published...' % layer_name
+		print('    layer {0} is not published...' % layer_name)
 
 def create_alternate_styles(gscat, gsws, pgdb, layer_schema, layer_name, layer_geomtype, sldinfo):
 	'''Generate and publish layer's alternate styles based on lookup table's records'''
@@ -117,7 +117,7 @@ def create_lut_style(gscat, gsws, pgdb, lut, layer_geomtype, sldinfo):
 
 	if gsstyle == None:
 		# Generate the style and publish to geoserver
-		print '    {0}'.format(style_name)
+		print('    {0}'.format(style_name))
 		lut_style = Style(style_name,
 		              layer_geomtype,
 					  sld_folder=sldinfo.folder,
@@ -128,7 +128,7 @@ def create_lut_style(gscat, gsws, pgdb, lut, layer_geomtype, sldinfo):
 		lut_style.generate()
 		lut_style.publish(gscat, gsws)
 	else:
-		print '    {0} (alt style already published)'.format(style_name)
+		print('    {0} (alt style already published)'.format(style_name))
 
 	# get style
 	gsstyle = gscat.get_style(style_name, gsws)
@@ -150,8 +150,8 @@ def create_datastore(gscat, gsws, datastore, schema, pginfo):
 		gsds = gscat.create_datastore(datastore, gsws)
 		gsds.connection_parameters.update(**gsds_info)
 		gscat.save(gsds)
-		print '\n{0}.{1}'.format(gsws.name, datastore)
+		print('\n{0}.{1}'.format(gsws.name, datastore))
 	else:
-		print '\n{0}.{1} (already published)'.format(gsws.name, schema)
+		print('\n{0}.{1} (already published)'.format(gsws.name, schema))
 
 	return gsds

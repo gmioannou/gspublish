@@ -15,20 +15,20 @@ class PostGIS:
 		)
 
 	def info(self):
-		print '\nPostGIS Info:'
-		print ' Database Name: %s' % self.dbname
-		print ' Host: %s' % self.host
-		print ' Port: %s' % self.port
-		print ' User: %s' % self.user
-		print ' Password: %s' % self.password
+		print('\nPostGIS Info:')
+		print(' Database Name: %s' % self.dbname)
+		print(' Host: %s' % self.host)
+		print(' Port: %s' % self.port)
+		print(' User: %s' % self.user)
+		print(' Password: %s' % self.password)
 
 	def connect(self):
 		try:
 			self.conn = psycopg2.connect(self.conn_string)
-			print '\nConnect to database ...'
+			print('\nConnect to database ...')
 		except psycopg2.Error as err:
-			print str(err)
-			print '\nUnable to connect to database %s ...' % self.dbname
+			print(str(err))
+			print('\nUnable to connect to database %s ...' % self.dbname)
 			sys.exit(1)
 
 	def disconnect(self):
@@ -36,14 +36,14 @@ class PostGIS:
 			self.conn.commit()
 			self.conn.close()
 
-		print "\nDisconnect from database ..."
+		print("\nDisconnect from database ...")
 
 	def get_schemas(self):
 		sql_string = "\
 			SELECT schema_name \
 			  FROM information_schema.schemata \
-	         WHERE schema_name <> 'information_schema' \
-	           AND schema_name NOT LIKE 'pg_%' \
+	     WHERE schema_name <> 'information_schema' \
+	       AND schema_name NOT LIKE 'pg_%' \
 			 ORDER BY schema_name;"
 
 		cur = self.conn.cursor()
