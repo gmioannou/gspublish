@@ -40,8 +40,12 @@ def publish_layer(gscat, gsws, gsds, layer_name, layer_srs, layer_geomtype):
 
 	layer_resource = gscat.get_resource(layer_name, gsds, gsws)
 	if layer_resource == None:
+
 		layer = gscat.publish_featuretype(layer_name, gsds, layer_srs)
-		layer.abstract = '{0}  {1}  {2}'.format(layer_name, layer_geomtype, layer_srs)
+		
+		layer.title = layer_name.replace("_", " ")
+		layer.abstract = '{0} {1} ({2})'.format(layer.title, layer_srs, layer_geomtype.lower())
+
 		gscat.save(layer)
 		print('\n  {0}.{1}.{2}'.format(gsws.name, gsds.name, layer_name))
 	else:
