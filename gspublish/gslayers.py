@@ -11,7 +11,7 @@ def publish_layers(pgdb, gscat, gsws, pginfo, gsinfo, sldinfo):
 
 	for schema in schemas:
 		# set datastore name to schema if no default provided
-		if gsinfo.datastore:
+		if hasattr(gsinfo, 'datastore'):
 			datastore = gsinfo.datastore
 		else:
 			datastore = schema
